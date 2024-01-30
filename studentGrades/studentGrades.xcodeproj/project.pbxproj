@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		33C7EC542B68018D002C3EF7 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C7EC532B68018D002C3EF7 /* main.swift */; };
+		33E300B12B696B5B006F727E /* CSV in Frameworks */ = {isa = PBXBuildFile; productRef = 33E300B02B696B5B006F727E /* CSV */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		33C7EC502B68018D002C3EF7 /* studentGrades */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = studentGrades; sourceTree = BUILT_PRODUCTS_DIR; };
 		33C7EC532B68018D002C3EF7 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		33E300AE2B6960E2006F727E /* grades.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = grades.csv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33E300B12B696B5B006F727E /* CSV in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				33C7EC532B68018D002C3EF7 /* main.swift */,
+				33E300AE2B6960E2006F727E /* grades.csv */,
 			);
 			path = studentGrades;
 			sourceTree = "<group>";
@@ -78,6 +82,9 @@
 			dependencies = (
 			);
 			name = studentGrades;
+			packageProductDependencies = (
+				33E300B02B696B5B006F727E /* CSV */,
+			);
 			productName = studentGrades;
 			productReference = 33C7EC502B68018D002C3EF7 /* studentGrades */;
 			productType = "com.apple.product-type.tool";
@@ -106,6 +113,9 @@
 				Base,
 			);
 			mainGroup = 33C7EC472B68018D002C3EF7;
+			packageReferences = (
+				33E300AF2B696B5A006F727E /* XCRemoteSwiftPackageReference "CSV" */,
+			);
 			productRefGroup = 33C7EC512B68018D002C3EF7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -285,6 +295,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		33E300AF2B696B5A006F727E /* XCRemoteSwiftPackageReference "CSV" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yaslab/CSV.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		33E300B02B696B5B006F727E /* CSV */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 33E300AF2B696B5A006F727E /* XCRemoteSwiftPackageReference "CSV" */;
+			productName = CSV;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 33C7EC482B68018D002C3EF7 /* Project object */;
 }
