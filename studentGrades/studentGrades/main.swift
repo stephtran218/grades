@@ -8,9 +8,35 @@
 import Foundation
 import CSV
 
-let stream = InputStream(fileAtPath: "/Users/studentam/Desktop/grades.csv" )
-let csv = try CSVReader(stream: stream!)
+do{
+    let stream = InputStream(fileAtPath: "/Users/studentam/Desktop/grades.csv" )
+    let csv = try CSVReader(stream: stream!)
+    
+    while let row = csv.next(){
+        manageData(row)
+    }
+}
+catch{
+    print("There was an error trying to read the file")
+}
 
+var studentNames: [String] = []
+var studentGrades: [[String]] = []
+var finalGrades: [Double] = []
+var numOfAssignments: Int = 0
+
+func manageData( _ studentInfo: [String]) {
+    var tempGrades: [String] = []
+    for i in studentInfo.indices{
+        if i == 0{
+            studentNames.append(studentInfo[0])
+        } else {
+            tempGrades.append(studentInfo[i])
+        }
+    }
+    studentGrades.append(tempGrades)
+    calcFinalGrade(tempGrades)
+}
 
 mainMenu()
 
@@ -29,24 +55,24 @@ func mainMenu(){
         "8. Filter students by grade range\n",
         "9. Quit\n")
         
-        if let userPick = readLine(), let userChoice = Int(userPick){
-            if userChoice == 1 {
+        if let userPick = readLine(){
+            if userPick == "1" {
                 displaySingleStudentGrade()
-            } else if userChoice == 2 {
+            } else if userPick == "2" {
                 displayAllStudentGrades()
-            } else if userChoice == 3 {
-                displayAllGradesForAllStudents ()
-            } else if userChoice == 4 {
+            } else if userPick == "3" {
+                displayAllGradesForAllStudents()
+            } else if userPick == "4" {
                 classAverage()
-            } else if userChoice == 5 {
+            } else if userPick == "5" {
                 assignmentGradeAverage()
-            } else if userChoice == 6 {
+            } else if userPick == "6" {
                 classLowestGrade()
-            } else if userChoice == 7 {
+            } else if userPick == "7" {
                 classHighestGrade()
-            } else if userChoice == 8 {
+            } else if userPick == "8" {
                 studentsByGradeRange()
-            } else if userChoice == 9 {
+            } else if userPick == "9" {
                 quitMenu()
             } else {
                 print ("Please enter a valid selection 1-9")
@@ -59,11 +85,63 @@ func mainMenu(){
 func displaySingleStudentGrade(){
     print ("Which student would you like to choose?")
     
-    if let userChoice = readLine(), let selectedStudent = String(userChoice){
-        findSingleGrade()
+    if let userPick = readLine(){
+        findStudent(userPick)
     }
 }
 
-func findSingleGrade(){
+func findStudent(_ userPick: String) {
+    for i in studentNames.indices {
+        if studentNames[i] == userPick {
+            let foundStudent = studentNames[i]
+            calcFinalGrade(foundStudent, studentGrades, finalGrades, tempGrades)
+        }
+    }
+}
+
+func calcFinalGrade(foundStudent: String, tempGrades: [String]) {
+    var sumOfScores = 0
+    
+    for eachGrade in tempGrades{
+        if let grade = Int(eachGrade){
+            sumOfScores += grade
+        }
+    }
+    
+    let gradeInClass = Double(sumOfScores) / Double(tempGrades.count)
+    finalGrades.append(gradeInClass)
+    print("\(foundStudent)'s grade in the class is \(gradeInClass)")
+}
+
+func displayAllStudentGrades(){
+    
+}
+
+func displayAllGradesForAllStudents(){
+    
+}
+
+func classAverage(){
+    
+}
+
+func assignmentGradeAverage(){
+    
+}
+
+
+func classLowestGrade(){
+    
+}
+
+func classHighestGrade(){
+    
+}
+
+func studentsByGradeRange(){
+    
+}
+
+func quitMenu(){
     
 }
