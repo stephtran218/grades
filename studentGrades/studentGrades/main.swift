@@ -12,6 +12,8 @@ var studentNames: [String] = []
 var studentGrades: [[String]] = []
 var finalGrades: [Double] = []
 var numOfAssignments: Int = 0
+var storedIndex: Int = 0
+
 
 do{
     let stream = InputStream(fileAtPath: "/Users/studentam/Desktop/grades.csv" )
@@ -59,7 +61,7 @@ func mainMenu() {
             if userPick == "1" {
                 displaySingleStudentGrade()
             } else if userPick == "2" {
-                displayAllStudentGrades()
+                displayAllStudentsGrades(storedIndex)
             } else if userPick == "3" {
                 displayAllGradesForAllStudents()
             } else if userPick == "4" {
@@ -85,19 +87,20 @@ func mainMenu() {
 func displaySingleStudentGrade() {
     print("Which student would you like to choose?")
     
-    if let userPick = readLine() {
-        findStudent(userPick)
+    if let student = readLine() {
+        findStudent(student)
+        print("\(student)'s grade in the class is \(finalGrades[storedIndex])")
     }
+    print ()
 }
 
-func findStudent( _ userPick:String){
-    var storedIndex: Int = 0
+func findStudent( _ userPick:String) -> Int{
     for i in studentNames.indices{
-        if userPick == studentNames[i]{
-            storedIndex = i
+        if userPick.lowercased() == studentNames[i].lowercased(){
+            return i
         }
     }
-    print("\(userPick)'s grade in the class is \(finalGrades[storedIndex])")
+    return -1
 }
 
 func calcFinalGrade( _ tempGrades: [String]){
@@ -111,12 +114,27 @@ func calcFinalGrade( _ tempGrades: [String]){
     finalGrades.append(sumOfScores/Double(tempGrades.count))
 }
 
-func displayAllStudentGrades(){
+func displayAllStudentsGrades( _ storedIndex: Int) {
+    print("Which student would you like to choose?")
     
+    if let pickedStudent = readLine(){
+        var studentIndex =  findStudent(pickedStudent)
+        if studentIndex < studentNames.count && studentIndex != -1{
+            let pickedStudent = studentNames[studentIndex]
+
+            print("\(pickedStudent)'s grades for this class are:")
+            for grade in studentGrades[studentIndex]{
+                print(grade, terminator:",")
+            }
+        }
+    }
+    print ()
 }
 
 func displayAllGradesForAllStudents(){
-    
+    for i in studentNames.indices{
+        print (i)
+    }
 }
 
 func classAverage(){
