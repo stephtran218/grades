@@ -132,16 +132,42 @@ func displayAllStudentsGrades( _ storedIndex: Int) {
 }
 
 func displayAllGradesForAllStudents(){
-    for i in studentNames.indices{
-        print (i)
+
+    for i in studentNames.indices {
+        let name = studentNames[i]
+        let grades = studentGrades[i]
+        
+        let cleanedGrades = grades.joined(separator: ", ")
+
+        print("\(name)'s grades are: \(cleanedGrades)")
     }
+    print()
 }
 
-func classAverage(){
+func classAverage() -> Double {
+    var totalSum: Double = 0
+    var headCount: Int = 1
     
-}
+    for grades in studentGrades {
+        for eachGrade in grades {
+            if let grade = Double(eachGrade) {
+                totalSum += grade
+                headCount += 1
+            }
+        }
+    }
+    
+    let average = totalSum / Double(headCount)
+    let roundedAverage = (average * 100).rounded() / 100
+    print("The class average is: \(roundedAverage)")
+    print()
 
+    return roundedAverage
+
+}
 func assignmentGradeAverage(){
+    print ("Which assignent would you like to get the average of (1-10):")
+    
     
 }
 
