@@ -165,10 +165,34 @@ func classAverage() -> Double {
     return roundedAverage
 
 }
-func assignmentGradeAverage(){
-    print ("Which assignent would you like to get the average of (1-10):")
-    
-    
+func assignmentGradeAverage() {
+    print("Which assignment would you like to get the average of (1-10):")
+
+    if let chosenAssignment = readLine(), let assignmentNumber = Int(chosenAssignment){
+        // Ensure the input is a valid integer between 1 and 10
+        
+        var totalSum: Double = 0
+        var count: Int = 0
+        
+        // Iterate through each student's grades for the chosen assignment
+        for grades in studentGrades {
+            let assignmentIndex = assignmentNumber - 1
+            if assignmentIndex < grades.count, let grade = Double(grades[assignmentIndex]) {
+                totalSum += grade
+                count += 1
+            }
+        }
+        
+        if count > 0 {
+            let average = totalSum / Double(count)
+            let roundedAverage = (average * 100).rounded() / 100
+
+            print("The average grade for assignment \(assignmentNumber) is: \(roundedAverage)")
+            print ()
+        }  else {
+            print("Please enter a valid assignment number between 1 and 10.")
+        }
+    }
 }
 
 func classLowestGrade(){
