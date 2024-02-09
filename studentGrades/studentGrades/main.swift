@@ -65,6 +65,7 @@ func mainMenu() {
               "8. Filter students by grade range\n",
               "9. Quit\n")
         
+        //This allows the user to put in an option and the code will call te function to what they chose
         if let userPick = readLine() {
             if userPick == "1" {
                 displaySingleStudentGrade()
@@ -95,6 +96,7 @@ func mainMenu() {
 func displaySingleStudentGrade() {
     print("Which student would you like to choose?")
     
+    //This asks the user which student they want to see their grade and it will call the function to find the student
     if let student = readLine() {
         findStudent(student)
         print("\(student)'s grade in the class is \(finalGrades[storedIndex])")
@@ -102,23 +104,29 @@ func displaySingleStudentGrade() {
     print ()
 }
 
+//This will take what the user put in and search through the for loop for the student and their name's index
 func findStudent( _ userPick:String) -> Int{
     for i in studentNames.indices{
+        //This makes it not case sensitive
         if userPick.lowercased() == studentNames[i].lowercased(){
             return i
         }
     }
+    //if the -1 gets returned, this means the student couldn't be found since there is no student in the -1 index
     return -1
 }
 
 func calcFinalGrade( _ tempGrades: [String]){
+    //This variable will account for all the points and add it so we can find the average
     var sumOfScores: Double = 0
     
+    //This for loop will go through the array and add the grade into the variable as a DOUBLE
     for eachGrade in tempGrades{
         if let grade = Double(eachGrade){
             sumOfScores += grade
         }
     }
+    //finalGrades will append the calculated grade by taking the total points and divide it by the number of assignments per each student
     finalGrades.append(sumOfScores/Double(tempGrades.count))
 }
 
@@ -126,12 +134,16 @@ func displayAllStudentsGrades( _ storedIndex: Int) {
     print("Which student would you like to choose?")
     
     if let pickedStudent = readLine(){
+        //studentIndex holds the student's # in the roster
         var studentIndex =  findStudent(pickedStudent)
+        //If their index is less than the total number of students, that means they are part of the class
         if studentIndex < studentNames.count && studentIndex != -1{
             let pickedStudent = studentNames[studentIndex]
-
+            
             print("\(pickedStudent)'s grades for this class are:")
+            //This takes studentIndex and matches it with the correct index in stuentGrades to mtch the correct scores to the student's name
             for grade in studentGrades[studentIndex]{
+                //This will seperate the grades w/ commas
                 print(grade, terminator:",")
             }
         }
@@ -141,10 +153,12 @@ func displayAllStudentsGrades( _ storedIndex: Int) {
 
 func displayAllGradesForAllStudents(){
 
+    //This for loop allows the code to go through every student and their grade and print them together, it will be correctly printed together bc they should have the correct index per each array
     for i in studentNames.indices {
         let name = studentNames[i]
         let grades = studentGrades[i]
         
+        //This removes the excess brackets and seperate the scores w/ commas
         let cleanedGrades = grades.joined(separator: ", ")
 
         print("\(name)'s grades are: \(cleanedGrades)")
@@ -156,16 +170,20 @@ func classAverage() -> Double {
     var totalSum: Double = 0
     var headCount: Int = 1
     
+    //This will find the class average by taking a sum of ALL grades of every student in the class to divide it w/ num of students (headCount)
     for grades in studentGrades {
         for eachGrade in grades {
             if let grade = Double(eachGrade) {
                 totalSum += grade
+                //This calculates the num of students everytime the for loop repeats per grades
                 headCount += 1
             }
         }
     }
-    
+   
+    //this performs the calculates to the grade
     let average = totalSum / Double(headCount)
+    //This rounds the total average t just two decimal places
     let roundedAverage = (average * 100).rounded() / 100
     print("The class average is: \(roundedAverage)")
     print()
@@ -177,20 +195,23 @@ func assignmentGradeAverage() {
     print("Which assignment would you like to get the average of (1-10):")
 
     if let chosenAssignment = readLine(), let assignmentNumber = Int(chosenAssignment){
-        // Ensure the input is a valid integer between 1 and 10
+        // to make sure the input isn't read as a string, it will be taken as an integer so that it can be matched to the grades' index later
         
         var totalSum: Double = 0
         var count: Int = 0
         
-        // Iterate through each student's grades for the chosen assignment
+        // this goes through the grades array and match the index of the array with the assignment number the user put in
         for grades in studentGrades {
+            //This makes sure it accounts for the 0-index assignment too
             let assignmentIndex = assignmentNumber - 1
+            //this will take the grade in the string and make it a double so that we can use it to calculate the average later
             if assignmentIndex < grades.count, let grade = Double(grades[assignmentIndex]) {
                 totalSum += grade
+                //This counts for every student by adding one everytime it goes through the loop (assuming every student got a grade for the same asignment)
                 count += 1
             }
         }
-        
+        //If it counted at last one student, it will calculate the assignment average
         if count > 0 {
             let average = totalSum / Double(count)
             let roundedAverage = (average * 100).rounded() / 100
@@ -205,17 +226,21 @@ func assignmentGradeAverage() {
 }
 
 func classLowestGrade(){
+    //we are assuming the lowest grade starts off with the first grade (0-index)
     var lowestGrade: Double = finalGrades[0]
     var lowestGradeIndex: Int = -1
     var lowestGradeStudentName = ""
 
-
+    //this goes through all the grades in class and compares each grade
     for i in finalGrades.indices {
+        //If the grade that was saved is greater than the grade being compared to in the array, the lowest grade var will now hold the lower grade that was being compared to (finalGrades[i])
         if lowestGrade > finalGrades[i]{
             lowestGrade = finalGrades[i]
+            //This saves the index where the lowest grade was found so we can match it to a name through matching up the indices
             lowestGradeIndex = i
         }
     }
+    //If the lowestGrade found wasn't in the -1 index, meaning there wasn;t an error and the index is part of the range in numOfStudents, it will find the correct name of the student w/ low grade
     if lowestGradeIndex != -1 && lowestGradeIndex < studentNames.count{
         lowestGradeStudentName = studentNames[lowestGradeIndex]
     }
@@ -225,16 +250,20 @@ func classLowestGrade(){
 }
 
 func classHighestGrade(){
+    //This is assuming the first grade in array is highest so that it can be compared to each index
     var highestGrade: Double = finalGrades[0]
     var highestGradeIndex: Int = -1
     var highestGradeStudentName = ""
 
     for i in finalGrades.indices {
+        //Everytime the loop runs, if the current index is greater than the highestGrade, it will replace that index with the current one
         if highestGrade < finalGrades[i]{
             highestGrade = finalGrades[i]
+            //This saves the index that was holding the highest grade
             highestGradeIndex = i
         }
     }
+    //If there wasn't an error and it correctly found the highest grade, it will take the saved index and match it to a name
     if highestGradeIndex != -1 && highestGradeIndex < studentNames.count{
         highestGradeStudentName = studentNames[highestGradeIndex]
     }
@@ -246,11 +275,15 @@ func classHighestGrade(){
 func studentsByGradeRange(){
     print("Enter the low range you would like to use:")
     
+    //this takes both ranges the user put in and saves it as parameters(range)
     if let lowRangeString = readLine(), let lowRange = Double(lowRangeString) {
         print("Enter the high range you would like to use:")
         if let highRangeString = readLine(), let highRange = Double(highRangeString) {
+            //this will go through the final grades array to see all students grades
             for i in finalGrades.indices{
+                //this var will take the scores per each indice
                 let studentInRange = finalGrades[i]
+                //if the score is between the range, their name will be printed because it matched the index from the finalGrades w the roster array
                 if studentInRange >= lowRange && studentInRange <= highRange {
                     if i < studentNames.count{
                         print(studentNames[i])
@@ -262,6 +295,7 @@ func studentsByGradeRange(){
     }
 }
 
+//this prints the message and ends the code
 func quitMenu(){
     print ("Have a great rest of your day!")
 }
